@@ -155,6 +155,7 @@ function update() {
 }
 dropdown.addEventListener('change', update);
 input.addEventListener('change', update);
+input.addEventListener('keyup', update);
 
 // Append to the DOM
 document.body.appendChild(dropdown);
