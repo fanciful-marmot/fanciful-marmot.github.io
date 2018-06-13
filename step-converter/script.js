@@ -69,7 +69,7 @@ var activities = {
   'Raking lawn/leaves': 121,
   'Racquetball, casual': 181,
   'Racquetball, competitive': 254,
-  // 'Rock climbing': 244, // Redundant?
+  'Rock climbing': 244, // Redundant?
   'Rollerblading': 156,
   'Rowing': 147,
   'Rowing machine': 212,
@@ -90,8 +90,8 @@ var activities = {
   'Snowboarding': 182,
   'Snowmobiling': 106,
   'Snowshoeing': 181,
-  'Soccer, recreational': 145, // I think these were swapped?
-  'Soccer, competitive': 181,
+  'Soccer, recreational': 181, // I think these are swapped?
+  'Soccer, competitive': 145,
   'Softball': 152,
   'Spinning': 200,
   'Squash': 348,
