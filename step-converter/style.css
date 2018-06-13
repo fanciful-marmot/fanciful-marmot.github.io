@@ -1,0 +1,21 @@
+* {
+  font-family: ArtifaktElement,Arial,sans-serif;
+  font-size: 16px;
+}
+
+body {
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+body * {
+  margin: 5px;
+}
+
+#stepInput {
+  width: 60px;
+  text-align: right;
+}
