@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta content="ie=edge" http-equiv="x-ua-compatible">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=contain">
+  <title>Spice Converter</title>
+  <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" />
+  <link href="style.css" rel="stylesheet" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=contain">
+</head>
+
+<body>
+  <div class="container">
+    <div id="timer">3:22:44</div>
+    <img id="image" class="image" src="soon.png" />
+  </div>
+  <script type="text/javascript">
+    const target = Date.parse('Mar 21 2022 23:59:59 GMT-0700 (Pacific Daylight Saving Time)');
+    const timer = document.getElementById('timer');
+    const image = document.getElementById('image');
+    const fadeStart = 15500;
+    const onFrame = () => {
+      // Delta in seconds
+      let delta = Math.floor(Math.max(0, target - Date.now()) / 1000);
+      const opacity = (fadeStart - delta) / fadeStart
+
+      const h = ('0' + Math.floor(delta / (60 * 60))).slice(-2);
+      delta = delta % (60 * 60);
+      const m = ('0' + Math.floor(delta / 60)).slice(-2);
+      delta = delta % 60;
+      const s = ('0' + delta).slice(-2);
+
+      image.style = `opacity: ${opacity}`;
+      timer.textContent = `${h}:${m}:${s}`;
+
+      requestAnimationFrame(onFrame);
+    };
+    onFrame();
+  </script>
+</body>
+
+</html>

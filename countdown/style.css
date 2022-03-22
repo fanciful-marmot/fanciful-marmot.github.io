@@ -1,0 +1,25 @@
+* {
+  font-family: ArtifaktElement,Arial,sans-serif;
+  font-size: 16px;
+}
+
+body {
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: radial-gradient(circle, #051937, #003051, #00475a, #005c4d, #006f30);
+}
+
+#timer {
+  font-size: 64px;
+  text-align: center;
+  color: white
+}
+
+.image {
+  width: 100vw;
+  height: 60vh;
+  object-fit: contain;
+}
