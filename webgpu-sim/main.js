@@ -13,8 +13,21 @@ Object.defineProperty(exports, "__esModule", ({ value: true }));
 const renderer_1 = __importDefault(__webpack_require__(862));
 const canvas = document.getElementById('gfx');
 const { width, height } = canvas.getBoundingClientRect();
-canvas.width = width;
-canvas.height = height;
+const dpr = window.devicePixelRatio;
+canvas.width = width * dpr;
+canvas.height = height * dpr;
+// Handle canvas resize
+const observer = new ResizeObserver((entries) => {
+    for (const entry of entries) {
+        if (entry.target === canvas) {
+            const dpr = window.devicePixelRatio;
+            const { width, height } = entry.contentRect;
+            canvas.width = width * dpr;
+            canvas.height = height * dpr;
+        }
+    }
+});
+observer.observe(canvas, { box: 'device-pixel-content-box' });
 const renderer = new renderer_1.default(canvas);
 renderer.start();
 
@@ -527,7 +540,7 @@ module.exports = "struct VertexInput {\n    @location(0) pos: vec3f,\n    @locat
 /***/ 535:
 /***/ ((module) => {
 
-module.exports = "struct VertexInput {\n    @location(0) pos: vec3f,\n    @location(1) uv: vec2f,\n}\n\nstruct VertexOutput {\n    @builtin(position) pos: vec4f,\n    @location(0) uv: vec2f,\n };\n\n@vertex\nfn vs_main(in: VertexInput) -> VertexOutput {\n    var out: VertexOutput;\n\n    out.pos = vec4f(in.pos, 1);\n    out.uv = in.uv;\n\n    return out;\n}\n\nstruct SimParams {\n    randomSeed: f32,\n    deltaT: f32,\n};\n\n@group(0) @binding(0) var<uniform> params : SimParams;\n\n@group(1) @binding(0) var fieldSampler: sampler;\n@group(1) @binding(1) var fieldTexture: texture_2d<f32>;\n\nconst DECAY_RATE = 0.06; // units/second\n\n@fragment\nfn fs_main(in: VertexOutput) -> @location(0) vec4f {\n    var pixelStep = vec2(1.0) / vec2f(textureDimensions(fieldTexture));\n\n    var color_out = vec4f();\n\n    // Diffusion 3x3 blur\n    var sum = vec4f();\n    for (var i = -1; i <= 1; i++) {\n        for (var j = -1; j <= 1; j++) {\n            sum += textureSample(fieldTexture, fieldSampler, in.uv + pixelStep * vec2f(f32(i), f32(j)));\n        }\n    }\n    color_out += sum / 9.0;\n\n    // Decay\n    color_out = max(vec4(), color_out - vec4(DECAY_RATE) * params.deltaT);\n\n    return color_out;\n}\n";
+module.exports = "struct VertexInput {\n    @location(0) pos: vec3f,\n    @location(1) uv: vec2f,\n}\n\nstruct VertexOutput {\n    @builtin(position) pos: vec4f,\n    @location(0) uv: vec2f,\n };\n\n@vertex\nfn vs_main(in: VertexInput) -> VertexOutput {\n    var out: VertexOutput;\n\n    out.pos = vec4f(in.pos, 1);\n    out.uv = in.uv;\n\n    return out;\n}\n\nstruct SimParams {\n    randomSeed: f32,\n    deltaT: f32,\n};\n\n@group(0) @binding(0) var<uniform> params : SimParams;\n\n@group(1) @binding(0) var fieldSampler: sampler;\n@group(1) @binding(1) var fieldTexture: texture_2d<f32>;\n\nconst DECAY_RATE = 0.06; // units/second\n\n@fragment\nfn fs_main(in: VertexOutput) -> @location(0) vec4f {\n    var pixelStep = vec2(1.0) / vec2f(textureDimensions(fieldTexture));\n\n    var color_out = vec4f();\n\n    // Diffusion 3x3 blur\n    var sum = vec4f();\n    for (var i = -1; i <= 1; i++) {\n        for (var j = -1; j <= 1; j++) {\n            sum += textureSample(fieldTexture, fieldSampler, in.uv + pixelStep * vec2f(f32(i), f32(j)));\n        }\n    }\n    // TODO: This should somehow be factored by time\n    color_out += sum / 9.0;\n\n    // Decay\n    color_out = max(vec4(), color_out - vec4(DECAY_RATE) * params.deltaT);\n\n    return color_out;\n}\n";
 
 /***/ })
 
